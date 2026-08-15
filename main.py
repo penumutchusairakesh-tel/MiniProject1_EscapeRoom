@@ -4,6 +4,7 @@ lifes = 5
 main_door_password = "3724"
 main_door_unlocked = False
 kitchen_locker_password = False #found or not
+bedroom_locker_password = False #found or not
 found_digits = []
 #_________________________________________________________
 def main_door():
@@ -46,11 +47,18 @@ def under_couch():
     papers.append("paper1->Found under couch")
 #_________________________________________________________
 def open_paper(paper_number:int):
-    global kitchen_locker_password
+    global kitchen_locker_password, bedroom_locker_password
     if paper_number == 1:
         kitchen_locker_password = True #found
         inventory.remove("paper1")
         print("Kitchen LOCKER code : 9898")
+    elif paper_number == 2:
+        bedroom_locker_password = True
+        inventory.remove("paper2")
+        print("Bedroom Locker code : 2307")
+    elif paper_number == 3:
+        inventory.remove("paper3")
+        print("NUMBER : 3")
     else:
         print("ee3wreb")
             
@@ -60,8 +68,8 @@ def enter_kitchen():
     global lifes
     locker_check = False
     got_password = False
+    print("entered KITCHEN!!")
     while not got_password:
-        print("entered KITCHEN!!")
         print("There is a fridge , stove and a locker in the kitchen\n1.Open Fridge 2.Open Locker 3.use stove 4.Exit Kitchen")
         kitchen_choice = int(input())
         if kitchen_choice == 1:
@@ -119,7 +127,54 @@ def enter_kitchen():
         else:
             print("EXITING KITCHEN!!")
             return
-#_________________________________________________________                    
+#_________________________________________________________   
+def enter_bedroom():
+    global lifes
+    print('Entered BEDROOM!')
+    got_bedpassword = False
+    bedlock_unlocked= False
+    while not got_bedpassword:
+        print("there is a 1. LOCKER 2. DRAWER(LOCKED) 3. SlEEP 4. Exit")
+        bed_choice = int(input())
+        if bed_choice == 1:
+            if bedroom_locker_password:
+                while not bedlock_unlocked and lifes !=0 :
+                    print("Enter Password! ")
+                    password = int(input())
+                    if password == 2307:
+                        bedlock_unlocked = True
+                        print("Found Bedroom Drawer Key -> ADDED TO INVENTORY!")
+                        inventory.append("bed_drawer_key")
+                    else:
+                        print("Try AGAIN")
+                        lifes -= 1
+            else:
+                print("FIND THE LOCKER PASSWORD!!!")
+                return
+        elif bed_choice == 2:
+            if not bedlock_unlocked:
+                print("FIND THE KEY FIRST !!")
+            else:
+                print("OPENING THE DRAWER")
+                inventory.remove("bed_drawer_key")  
+                print("found a paper3 -> ADDED TO INVENTORY")
+                inventory.append("paper3")
+                print("Found CLOSET KEY -> ADDED TO INVENTORY")
+                inventory.append("closet_key")
+                got_bedpassword = True
+                
+        elif bed_choice == 3:
+            print("YOU ARE IN A DEEP SLUMBER .... DREAMSSSSS...... THE NUMBER IS 3")
+            print("YOU WOKE UPP")
+            got_bedpassword = True
+        else:
+            print("EXITING BEDROOM")
+            return  
+#_________________________________________________________   
+
+#_________________________________________________________   
+                 
+                 
 def inventory_printer():
     print("YOU HAVE FOUND")
     for index in range((len(found_digits))):
@@ -153,7 +208,7 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
         case 5:
             enter_kitchen()
         case 6:
-            pass
+            enter_bedroom()
         case 7:
             print("YOU HAVE ")
             for index in range((len(inventory))): #0 to len-1 (since range excludes the extreme end)
