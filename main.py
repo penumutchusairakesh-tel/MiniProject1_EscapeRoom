@@ -1,7 +1,7 @@
 inventory = []
 papers = []
 lifes = 5
-main_door_password = "3724"
+main_door_password = 3724
 main_door_unlocked = False
 kitchen_locker_password = False #found or not
 bedroom_locker_password = False #found or not
@@ -13,7 +13,7 @@ def main_door():
     print("Enter 1. to enter the password 2.Exit searching password")
     PASSWORD_ENTER_CHOICE = int(input())
     if PASSWORD_ENTER_CHOICE == 1:
-        USER_MAIN_DOOR_PASSWORD = input("ENTER THE PASSWORD : ")
+        USER_MAIN_DOOR_PASSWORD = int(input("ENTER THE PASSWORD : "))
         if USER_MAIN_DOOR_PASSWORD == main_door_password:
             main_door_unlocked = True
             print(main_door_unlocked)
@@ -29,7 +29,7 @@ def main_door():
 def check_drawer():
     # global inventory (not needed since i am just modifying)
     if "drawer_key" not in inventory: #if drawer key is not there
-        print("You need a key to open the door")
+        print("You need a key to open the drawer")
         return
     else: #if key is there
         print("Drawer Key USED!")
@@ -51,16 +51,26 @@ def open_paper(paper_number:int):
     if paper_number == 1:
         kitchen_locker_password = True #found
         inventory.remove("paper1")
+        papers.remove("paper1->Found under couch")
         print("Kitchen LOCKER code : 9898")
     elif paper_number == 2:
         bedroom_locker_password = True
         inventory.remove("paper2")
+        papers.remove("paper2 -> FOUND IN KITCHEN LOCKER")
         print("Bedroom Locker code : 2307")
     elif paper_number == 3:
         inventory.remove("paper3")
+        papers.remove("paper3 -> FOUND IN BEDROOM CLOSET")
         print("NUMBER : 3")
+        found_digits.insert(0,3)
+    elif paper_number == 4:
+        inventory.remove("paper4")
+        papers.remove("paper4 -> FOUND IN THE CLOSET")
+        print("NUMBER : 2")
+        found_digits.insert(2,2)
+        
     else:
-        print("ee3wreb")
+        print("Try Again!")
             
             
 #_________________________________________________________
@@ -87,6 +97,7 @@ def enter_kitchen():
                         print("hint : NEEDS HEAT TO REVEAL ITS CONTENT ")
                         print("Found a paper -> paper2 added to inventory")
                         inventory.append("paper2")
+                        papers.append("paper2 -> FOUND IN KITCHEN LOCKER")
                     else:
                         print("TRY AGAIN:")
                         lifes -= 1
@@ -159,6 +170,7 @@ def enter_bedroom():
                 inventory.remove("bed_drawer_key")  
                 print("found a paper3 -> ADDED TO INVENTORY")
                 inventory.append("paper3")
+                papers.append("paper3 -> FOUND IN BEDROOM CLOSET")
                 print("Found CLOSET KEY -> ADDED TO INVENTORY")
                 inventory.append("closet_key")
                 got_bedpassword = True
@@ -167,18 +179,28 @@ def enter_bedroom():
             print("YOU ARE IN A DEEP SLUMBER .... DREAMSSSSS...... THE NUMBER IS 3")
             print("YOU WOKE UPP")
             got_bedpassword = True
+            found_digits.insert(0,3)
         else:
             print("EXITING BEDROOM")
             return  
 #_________________________________________________________   
-
+def check_closet ():
+    if "closet_key" not in inventory:
+        print("FIND THE KEY FIRST!!")
+        return
+    else:
+        print("UNLOCKED THE CLOSET!!!")
+        print("FOUND paper4 -> ADDED TO INVENTORY")
+        inventory.append("paper4")
+        papers.append("paper4 -> FOUND IN THE CLOSET")
+        return
+    
 #_________________________________________________________   
                  
                  
 def inventory_printer():
-    print("YOU HAVE FOUND")
-    for index in range((len(found_digits))):
-        print(index+1,".",found_digits[index],end=",")
+    for index in range((len(inventory))): #0 to len-1 (since range excludes the extreme end)
+        print(index+1,inventory[index],end=" ")
 #_________________________________________________________ 
     
 print("YOU ARE IN A ROOM WHICH U HAVE TO ESCAPE : YOU HAVE 5 LIFES PLAY WISELY ")
@@ -187,7 +209,7 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
           PRESS:
           1. ENTER THE MAIN DOOR PASSWORD
           2. CHECK INSIDE THE HOUSE DRAWER
-          3. CHECK INDISE THE HOUSE CUPBOARD
+          3. CHECK INDISE THE HOUSE CLOSET
           4. CHECK UNDER THE COUCH
           5. ENTER THE KITCHEN
           6. ENTER THE BEDROOM
@@ -202,7 +224,7 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
         case 2:
             check_drawer()
         case 3:
-            pass
+            check_closet()
         case 4:
             under_couch()
         case 5:
@@ -211,13 +233,14 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
             enter_bedroom()
         case 7:
             print("YOU HAVE ")
-            for index in range((len(inventory))): #0 to len-1 (since range excludes the extreme end)
-                print(inventory[index],end=" ")
+            
         case 8:
-            inventory_printer()
+            print("YOU HAVE FOUND")
+            for index in range((len(found_digits))):
+                print(found_digits[index],end=",")
         case 9:
             print("YOU HAVE the following papers :\n",papers)
-            paper_num = int(input("Enter the paper NUMBER you want to unfold"))
+            paper_num = int(input("Enter the paper NUMBER you want to unfold "))
             open_paper(paper_num)
             
             
