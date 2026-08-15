@@ -7,6 +7,13 @@ About:
 
     The game has rooms, locked areas, puzzles that require a password, an inventory system, a limited number of lives and various ways to find clues.
 
+Features:
+- Inventory system
+- Multiple rooms
+- Puzzle progression
+- Life system
+- Password-based escape
+
 Concepts Used
 
     print()
