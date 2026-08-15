@@ -40,6 +40,7 @@ def check_drawer():
         print("You need a key to open the drawer")
         return
     else: #if key is there
+        drawer_open = True
         print("Drawer Key USED!")
         inventory.remove("drawer_key")
         print("FOUND A PAPER it says -> \"7\"")
@@ -53,6 +54,7 @@ def under_couch():
         print("ALREADY CHECKED!!!")
         return
     print("Found a drawer key!! ADDED TO INVENTORY")
+    couch_under = True
     inventory.append("drawer_key")
     print("FOUND A PAPER -> paper1 added to inventory")
     inventory.append("paper1")
@@ -210,6 +212,7 @@ def check_closet ():
         print("FIND THE KEY FIRST!!")
         return
     else:
+        closet_open = True
         print("UNLOCKED THE CLOSET!!!")
         closet_open = True
         print("FOUND paper4 -> ADDED TO INVENTORY")
@@ -255,6 +258,7 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
             enter_bedroom()
         case 7:
             print("YOU HAVE ")
+            inventory_printer()
             
         case 8:
             print("YOU HAVE FOUND")
