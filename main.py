@@ -6,6 +6,10 @@ main_door_unlocked = False
 kitchen_locker_password = False #found or not
 bedroom_locker_password = False #found or not
 found_digits = []
+fridge_open = False
+closet_open = False
+drawer_open = False
+couch_under = False
 #_________________________________________________________
 def main_door():
     global main_door_unlocked , lifes
@@ -27,6 +31,10 @@ def main_door():
         return
 #_________________________________________________________
 def check_drawer():
+    global drawer_open
+    if drawer_open:
+        print("ALREADY OPENED!!")
+        return
     # global inventory (not needed since i am just modifying)
     if "drawer_key" not in inventory: #if drawer key is not there
         print("You need a key to open the drawer")
@@ -40,6 +48,10 @@ def check_drawer():
         inventory.append("gas_lighter")
 #_________________________________________________________
 def under_couch():
+    global couch_under
+    if couch_under:
+        print("ALREADY CHECKED!!!")
+        return
     print("Found a drawer key!! ADDED TO INVENTORY")
     inventory.append("drawer_key")
     print("FOUND A PAPER -> paper1 added to inventory")
@@ -75,15 +87,20 @@ def open_paper(paper_number:int):
             
 #_________________________________________________________
 def enter_kitchen():
-    global lifes
+    global lifes , fridge_open
     locker_check = False
     got_password = False
+    
     print("entered KITCHEN!!")
     while not got_password:
         print("There is a fridge , stove and a locker in the kitchen\n1.Open Fridge 2.Open Locker 3.use stove 4.Exit Kitchen")
         kitchen_choice = int(input())
         if kitchen_choice == 1:
+            if fridge_open:
+                print("ALREADY OPENED!!")
+                return
             print("WATER BOTTLE FOUND IN THE FRIDGE : ADDED TO INVENTORY")
+            fridge_open = True
             inventory.append("water_bottle")
         elif kitchen_choice == 2:
             if kitchen_locker_password: #if kitchen_locker_password is true then try the password
@@ -185,11 +202,16 @@ def enter_bedroom():
             return  
 #_________________________________________________________   
 def check_closet ():
+    global closet_open
+    if closet_open:
+        print("ALREADY OPENED!!")
+        return
     if "closet_key" not in inventory:
         print("FIND THE KEY FIRST!!")
         return
     else:
         print("UNLOCKED THE CLOSET!!!")
+        closet_open = True
         print("FOUND paper4 -> ADDED TO INVENTORY")
         inventory.append("paper4")
         papers.append("paper4 -> FOUND IN THE CLOSET")
@@ -242,7 +264,4 @@ while not(main_door_unlocked) and lifes != 0: #even if one is false game ends
             print("YOU HAVE the following papers :\n",papers)
             paper_num = int(input("Enter the paper NUMBER you want to unfold "))
             open_paper(paper_num)
-            
-            
-            
-    
+#_________________________________________________________   
